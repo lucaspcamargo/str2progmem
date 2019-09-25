@@ -1,3 +1,3 @@
 # str2progmem
 
-See https://camargo.eng.br/string-tables-in-flash-memory-on-arduino-(+-script!)
+See https://www.camargo.eng.br/2019/08/30/string-tables-in-flash-memory-on-arduino-script/
