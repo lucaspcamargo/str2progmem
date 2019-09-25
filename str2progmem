@@ -38,40 +38,40 @@ indexes = []
 with open(stringFile, "r") as flist:
     lcounter = 1
 
-    l = flist.readline()
-    if(l.endswith('\n')):
-        l = l[:-1]
-
-    while l != "" :
-        tokens = l.split()
-        if len(tokens) == 2:
-            if tokens[0] == "__IDENTIFIER":
-                idtf = tokens[1]
-                l = flist.readline()
-                lcounter += 1
-                continue
-
-        if(not l.startswith("#")):
-            indexes.append(len(blob))
-            idx = 0
-            while idx < len(l):
-                if(l[idx] == "¬"[0] and idx+2 < len(l)):
-                    # char byte in hex incoming
-                    hex = ""
-                    hex += l[idx+1]
-                    hex += l[idx+2]
-                    blob += bytes.fromhex(hex)
-                    idx += 2
-                else:
-                    blob += bytes([ord(l[idx])])
-
-                idx += 1
-            blob.append(0); # add null terminator to every string
-
+    while(True):
 
         l = flist.readline()
-        if(l.endswith('\n')):
+        if(l == ""):
+            break
+        while(l.endswith('\n')):
             l = l[:-1]
+
+        if l != "" :
+            tokens = l.split()
+            if len(tokens) == 2:
+                if tokens[0] == "__IDENTIFIER":
+                    idtf = tokens[1]
+                    l = flist.readline()
+                    lcounter += 1
+                    continue
+
+            if(not l.startswith("#")):
+                indexes.append(len(blob))
+                idx = 0
+                while idx < len(l):
+                    if(l[idx] == "¬"[0] and idx+2 < len(l)):
+                        # char byte in hex incoming
+                        hex = ""
+                        hex += l[idx+1]
+                        hex += l[idx+2]
+                        blob += bytes.fromhex(hex)
+                        idx += 2
+                    else:
+                        blob += bytes([ord(l[idx])])
+
+                    idx += 1
+                blob.append(0); # add null terminator to every string
+
 
 idtf = "str_table" if not idtf else idtf
 
@@ -89,7 +89,7 @@ outh.write("static const int {}_COUNT = {};\n".format(idtf.upper(), len(indexes)
 outh.write("static const int {}_BLOB_SZ = {};\n".format(idtf.upper(), len(blob)))
 outh.write("extern const unsigned short {}_offsets[];\n".format(idtf))
 outh.write("extern const char {}_blob[];\n".format(idtf))
-outh.write("\n#define {}_GET_OFFSET(I) pgm_read_word(&({}_offsets[(I)]]))\n".format(idtf.upper(), idtf))
+outh.write("\n#define {}_GET_OFFSET(I) pgm_read_word(&({}_offsets[(I)]))\n".format(idtf.upper(), idtf))
 outh.write("#define {}_GET(I) ( ((const char*) &{}_blob) + {}_GET_OFFSET(I) )\n".format(idtf.upper(), idtf, idtf.upper()))
 outh.write("#define PGMSTR(x) (__FlashStringHelper*)(x)")
 
