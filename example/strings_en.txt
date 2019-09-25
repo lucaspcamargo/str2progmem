@@ -1,0 +1,5 @@
+# strings_en.txt -- demo string list
+__IDENTIFIER str_en
+Welcome to the Menu
+I ¬9D NY!
+¬01¬02¬ad¬0f¬ff
