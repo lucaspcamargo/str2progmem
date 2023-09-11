@@ -8,7 +8,7 @@ It also works for generic C usage by setting the env var `TARGET` to `generic`.
 
 Given this string list:
 
-```txt
+```
 # strings_en.txt
 __IDENTIFIER str_en
 Welcome to the Menu
